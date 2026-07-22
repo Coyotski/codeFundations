@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutina Leviatán - 4 Días</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: #ffd700;
+            color: #1e3c72;
+            border-color: #ffd700;
+        }
+
+        .day-content {
+            display: none;
+        }
+
+        .day-content.active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .exercise-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .exercise-title {
+            flex: 1;
+        }
+
+        .exercise-title h3 {
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+
+        .exercise-details {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .series-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .series-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .series-item:hover {
+            background: #e9ecef;
+        }
+
+        .series-item input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #667eea;
+            flex-shrink: 0;
+        }
+
+        .series-item label {
+            flex: 1;
+            cursor: pointer;
+            user-select: none;
+            min-width: 100px;
+        }
+
+        .weight-inputs {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .weight-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .weight-group span {
+            font-size: 0.85em;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .weight-input {
+            width: 60px;
+            padding: 5px 8px;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            font-size: 0.9em;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .weight-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .suggested-weight {
+            background: #e7f3ff;
+            color: #0066cc;
+            font-size: 0.8em;
+            padding: 3px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .series-item.completed {
+            opacity: 0.6;
+        }
+
+        .series-item.completed label {
+            text-decoration: line-through;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 30px;
+            margin-top: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .reset-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            width: 100%;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .notes {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .notes h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .notes ul {
+            margin-left: 20px;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .tab {
+                min-width: 150px;
+                padding: 12px;
+                font-size: 0.9em;
+            }
+
+            .exercise-number {
+                width: 40px;
+                height: 40px;
+                font-size: 1em;
+            }
+
+            .weight-inputs {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .series-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🏋️ RUTINA LEVIATÁN</h1>
+        <p class="subtitle">De 118kg a 140kg en 12 meses</p>
+
+        <div class="tabs">
+            <div class="tab active" onclick="showDay(1)">DÍA 1: PIERNA</div>
+            <div class="tab" onclick="showDay(2)">DÍA 2: EMPUJE</div>
+            <div class="tab" onclick="showDay(3)">DÍA 3: TIRÓN</div>
+            <div class="tab" onclick="showDay(4)">DÍA 4: ACCESORIOS</div>
+        </div>
+
+        <!-- DÍA 1: PIERNA -->
+        <div id="day1" class="day-content active">
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">1</div>
+                    <div class="exercise-title">
+                        <h3>SENTADILLA CON BARRA</h3>
+                        <div class="exercise-details">4 series x 3-5 reps (85-90% 1RM) | Descanso: 4-5 min</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e1s1" onchange="updateProgress(1)">
+                        <label for="d1e1s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e1s2" onchange="updateProgress(1)">
+                        <label for="d1e1s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e1s3" onchange="updateProgress(1)">
+                        <label for="d1e1s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e1s4" onchange="updateProgress(1)">
+                        <label for="d1e1s4">Serie 4: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">2</div>
+                    <div class="exercise-title">
+                        <h3>PRENSA DE PIERNA</h3>
+                        <div class="exercise-details">3 series x 8-10 reps | Descanso: 2-3 min</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e2s1" onchange="updateProgress(1)">
+                        <label for="d1e2s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e2s2" onchange="updateProgress(1)">
+                        <label for="d1e2s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e2s3" onchange="updateProgress(1)">
+                        <label for="d1e2s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">3</div>
+                    <div class="exercise-title">
+                        <h3>PESO MUERTO RUMANO</h3>
+                        <div class="exercise-details">3 series x 6-8 reps | Descanso: 2-3 min</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e3s1" onchange="updateProgress(1)">
+                        <label for="d1e3s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e3s2" onchange="updateProgress(1)">
+                        <label for="d1e3s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e3s3" onchange="updateProgress(1)">
+                        <label for="d1e3s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">4</div>
+                    <div class="exercise-title">
+                        <h3>EXTENSIONES DE CUÁDRICEPS</h3>
+                        <div class="exercise-details">3 series x 12-15 reps | Descanso: 90 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e4s1" onchange="updateProgress(1)">
+                        <label for="d1e4s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e4s2" onchange="updateProgress(1)">
+                        <label for="d1e4s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e4s3" onchange="updateProgress(1)">
+                        <label for="d1e4s3">Serie 3: ___ kg x ___ reps (Drop set)</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">5</div>
+                    <div class="exercise-title">
+                        <h3>CURL FEMORAL TUMBADO</h3>
+                        <div class="exercise-details">4 series x 10-12 reps | Descanso: 90 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e5s1" onchange="updateProgress(1)">
+                        <label for="d1e5s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e5s2" onchange="updateProgress(1)">
+                        <label for="d1e5s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e5s3" onchange="updateProgress(1)">
+                        <label for="d1e5s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e5s4" onchange="updateProgress(1)">
+                        <label for="d1e5s4">Serie 4: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">6</div>
+                    <div class="exercise-title">
+                        <h3>PANTORRILLAS</h3>
+                        <div class="exercise-details">4 series x 15-20 reps | Descanso: 60 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e6s1" onchange="updateProgress(1)">
+                        <label for="d1e6s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e6s2" onchange="updateProgress(1)">
+                        <label for="d1e6s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e6s3" onchange="updateProgress(1)">
+                        <label for="d1e6s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d1e6s4" onchange="updateProgress(1)">
+                        <label for="d1e6s4">Serie 4: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress1" style="width: 0%">0%</div>
+            </div>
+
+            <button class="reset-btn" onclick="resetDay(1)">🔄 Reiniciar Día 1</button>
+
+            <div class="notes">
+                <h4>📝 Notas Importantes:</h4>
+                <ul>
+                    <li>Profundidad en sentadilla: Muslos paralelos al piso mínimo</li>
+                    <li>Descansos largos en ejercicios principales (4-5 min)</li>
+                    <li>Duración total: 75-90 minutos</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- DÍA 2: EMPUJE -->
+        <div id="day2" class="day-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">1</div>
+                    <div class="exercise-title">
+                        <h3>PRESS DE BANCA PLANO</h3>
+                        <div class="exercise-details">4 series x 3-5 reps (85-90% 1RM) | Descanso: 4-5 min</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e1s1" onchange="updateProgress(2)">
+                        <label for="d2e1s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e1s2" onchange="updateProgress(2)">
+                        <label for="d2e1s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e1s3" onchange="updateProgress(2)">
+                        <label for="d2e1s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e1s4" onchange="updateProgress(2)">
+                        <label for="d2e1s4">Serie 4: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">2</div>
+                    <div class="exercise-title">
+                        <h3>PRESS INCLINADO CON MANCUERNAS</h3>
+                        <div class="exercise-details">3 series x 8-10 reps | Descanso: 2-3 min</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e2s1" onchange="updateProgress(2)">
+                        <label for="d2e2s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e2s2" onchange="updateProgress(2)">
+                        <label for="d2e2s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e2s3" onchange="updateProgress(2)">
+                        <label for="d2e2s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">3</div>
+                    <div class="exercise-title">
+                        <h3>PRESS MILITAR (DE PIE)</h3>
+                        <div class="exercise-details">3 series x 6-8 reps | Descanso: 3 min</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e3s1" onchange="updateProgress(2)">
+                        <label for="d2e3s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e3s2" onchange="updateProgress(2)">
+                        <label for="d2e3s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e3s3" onchange="updateProgress(2)">
+                        <label for="d2e3s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">4</div>
+                    <div class="exercise-title">
+                        <h3>FONDOS EN PARALELAS</h3>
+                        <div class="exercise-details">3 series x AMRAP | Descanso: 2 min</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e4s1" onchange="updateProgress(2)">
+                        <label for="d2e4s1">Serie 1: ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e4s2" onchange="updateProgress(2)">
+                        <label for="d2e4s2">Serie 2: ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e4s3" onchange="updateProgress(2)">
+                        <label for="d2e4s3">Serie 3: ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">5</div>
+                    <div class="exercise-title">
+                        <h3>EXTENSIONES DE TRÍCEPS EN POLEA</h3>
+                        <div class="exercise-details">3 series x 12-15 reps | Descanso: 90 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e5s1" onchange="updateProgress(2)">
+                        <label for="d2e5s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e5s2" onchange="updateProgress(2)">
+                        <label for="d2e5s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e5s3" onchange="updateProgress(2)">
+                        <label for="d2e5s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">6</div>
+                    <div class="exercise-title">
+                        <h3>ELEVACIONES LATERALES</h3>
+                        <div class="exercise-details">3 series x 15-20 reps | Descanso: 60 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e6s1" onchange="updateProgress(2)">
+                        <label for="d2e6s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e6s2" onchange="updateProgress(2)">
+                        <label for="d2e6s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d2e6s3" onchange="updateProgress(2)">
+                        <label for="d2e6s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress2" style="width: 0%">0%</div>
+            </div>
+
+            <button class="reset-btn" onclick="resetDay(2)">🔄 Reiniciar Día 2</button>
+
+            <div class="notes">
+                <h4>📝 Notas Importantes:</h4>
+                <ul>
+                    <li>Press de banca: Barra toca el pecho, no rebotes</li>
+                    <li>Press militar: Core apretado, barra pegada a la cara</li>
+                    <li>Duración total: 75-90 minutos</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- DÍA 3: TIRÓN -->
+        <div id="day3" class="day-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">1</div>
+                    <div class="exercise-title">
+                        <h3>PESO MUERTO CONVENCIONAL</h3>
+                        <div class="exercise-details">3 series x 3-5 reps (85-90% 1RM) | Descanso: 5 min</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e1s1" onchange="updateProgress(3)">
+                        <label for="d3e1s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e1s2" onchange="updateProgress(3)">
+                        <label for="d3e1s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e1s3" onchange="updateProgress(3)">
+                        <label for="d3e1s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">2</div>
+                    <div class="exercise-title">
+                        <h3>REMO CON BARRA (PENDLAY ROW)</h3>
+                        <div class="exercise-details">4 series x 6-8 reps | Descanso: 2-3 min</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e2s1" onchange="updateProgress(3)">
+                        <label for="d3e2s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e2s2" onchange="updateProgress(3)">
+                        <label for="d3e2s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e2s3" onchange="updateProgress(3)">
+                        <label for="d3e2s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e2s4" onchange="updateProgress(3)">
+                        <label for="d3e2s4">Serie 4: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">3</div>
+                    <div class="exercise-title">
+                        <h3>JALÓN AL PECHO</h3>
+                        <div class="exercise-details">3 series x 10-12 reps | Descanso: 2 min</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e3s1" onchange="updateProgress(3)">
+                        <label for="d3e3s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e3s2" onchange="updateProgress(3)">
+                        <label for="d3e3s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e3s3" onchange="updateProgress(3)">
+                        <label for="d3e3s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">4</div>
+                    <div class="exercise-title">
+                        <h3>REMO EN MÁQUINA (UNILATERAL)</h3>
+                        <div class="exercise-details">3 series x 10-12 reps por lado | Descanso: 90 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e4s1" onchange="updateProgress(3)">
+                        <label for="d3e4s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e4s2" onchange="updateProgress(3)">
+                        <label for="d3e4s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e4s3" onchange="updateProgress(3)">
+                        <label for="d3e4s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">5</div>
+                    <div class="exercise-title">
+                        <h3>FACE PULLS</h3>
+                        <div class="exercise-details">4 series x 15-20 reps | Descanso: 60 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e5s1" onchange="updateProgress(3)">
+                        <label for="d3e5s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e5s2" onchange="updateProgress(3)">
+                        <label for="d3e5s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e5s3" onchange="updateProgress(3)">
+                        <label for="d3e5s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e5s4" onchange="updateProgress(3)">
+                        <label for="d3e5s4">Serie 4: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">6</div>
+                    <div class="exercise-title">
+                        <h3>CURL DE BÍCEPS CON BARRA</h3>
+                        <div class="exercise-details">3 series x 8-10 reps | Descanso: 90 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e6s1" onchange="updateProgress(3)">
+                        <label for="d3e6s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e6s2" onchange="updateProgress(3)">
+                        <label for="d3e6s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e6s3" onchange="updateProgress(3)">
+                        <label for="d3e6s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">7</div>
+                    <div class="exercise-title">
+                        <h3>ENCOGIMIENTOS (SHRUGS)</h3>
+                        <div class="exercise-details">3 series x 12-15 reps | Descanso: 90 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e7s1" onchange="updateProgress(3)">
+                        <label for="d3e7s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e7s2" onchange="updateProgress(3)">
+                        <label for="d3e7s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d3e7s3" onchange="updateProgress(3)">
+                        <label for="d3e7s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress3" style="width: 0%">0%</div>
+            </div>
+
+            <button class="reset-btn" onclick="resetDay(3)">🔄 Reiniciar Día 3</button>
+
+            <div class="notes">
+                <h4>📝 Notas Importantes:</h4>
+                <ul>
+                    <li>Peso muerto: Espalda NEUTRAL, no redondeada</li>
+                    <li>Descanso de 5 minutos completos en peso muerto</li>
+                    <li>Duración total: 80-95 minutos</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- DÍA 4: ACCESORIOS -->
+        <div id="day4" class="day-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">1</div>
+                    <div class="exercise-title">
+                        <h3>PRESS DE HOMBROS CON MANCUERNAS</h3>
+                        <div class="exercise-details">3 series x 10-12 reps | Descanso: 2 min</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e1s1" onchange="updateProgress(4)">
+                        <label for="d4e1s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e1s2" onchange="updateProgress(4)">
+                        <label for="d4e1s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e1s3" onchange="updateProgress(4)">
+                        <label for="d4e1s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">2</div>
+                    <div class="exercise-title">
+                        <h3>ELEVACIONES LATERALES</h3>
+                        <div class="exercise-details">4 series x 15-20 reps | Descanso: 60 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e2s1" onchange="updateProgress(4)">
+                        <label for="d4e2s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e2s2" onchange="updateProgress(4)">
+                        <label for="d4e2s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e2s3" onchange="updateProgress(4)">
+                        <label for="d4e2s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e2s4" onchange="updateProgress(4)">
+                        <label for="d4e2s4">Serie 4: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">3</div>
+                    <div class="exercise-title">
+                        <h3>PRESS INCLINADO EN MÁQUINA</h3>
+                        <div class="exercise-details">3 series x 12-15 reps | Descanso: 90 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e3s1" onchange="updateProgress(4)">
+                        <label for="d4e3s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e3s2" onchange="updateProgress(4)">
+                        <label for="d4e3s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e3s3" onchange="updateProgress(4)">
+                        <label for="d4e3s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">4</div>
+                    <div class="exercise-title">
+                        <h3>CURL MARTILLO</h3>
+                        <div class="exercise-details">3 series x 10-12 reps | Descanso: 90 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e4s1" onchange="updateProgress(4)">
+                        <label for="d4e4s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e4s2" onchange="updateProgress(4)">
+                        <label for="d4e4s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e4s3" onchange="updateProgress(4)">
+                        <label for="d4e4s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">5</div>
+                    <div class="exercise-title">
+                        <h3>EXTENSIONES DE TRÍCEPS SOBRE CABEZA</h3>
+                        <div class="exercise-details">3 series x 12-15 reps | Descanso: 90 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e5s1" onchange="updateProgress(4)">
+                        <label for="d4e5s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e5s2" onchange="updateProgress(4)">
+                        <label for="d4e5s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e5s3" onchange="updateProgress(4)">
+                        <label for="d4e5s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">6</div>
+                    <div class="exercise-title">
+                        <h3>ABDOMINALES CON PESO</h3>
+                        <div class="exercise-details">4 series x 10-15 reps | Descanso: 60 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e6s1" onchange="updateProgress(4)">
+                        <label for="d4e6s1">Serie 1: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e6s2" onchange="updateProgress(4)">
+                        <label for="d4e6s2">Serie 2: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e6s3" onchange="updateProgress(4)">
+                        <label for="d4e6s3">Serie 3: ___ kg x ___ reps</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e6s4" onchange="updateProgress(4)">
+                        <label for="d4e6s4">Serie 4: ___ kg x ___ reps</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="exercise-number">7</div>
+                    <div class="exercise-title">
+                        <h3>PLANCHA ABDOMINAL</h3>
+                        <div class="exercise-details">3 series x 45-60 seg | Descanso: 60 seg</div>
+                    </div>
+                </div>
+                <div class="series-list">
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e7s1" onchange="updateProgress(4)">
+                        <label for="d4e7s1">Serie 1: ___ segundos</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e7s2" onchange="updateProgress(4)">
+                        <label for="d4e7s2">Serie 2: ___ segundos</label>
+                    </div>
+                    <div class="series-item">
+                        <input type="checkbox" id="d4e7s3" onchange="updateProgress(4)">
+                        <label for="d4e7s3">Serie 3: ___ segundos</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress4" style="width: 0%">0%</div>
+            </div>
+
+            <button class="reset-btn" onclick="resetDay(4)">🔄 Reiniciar Día 4</button>
+
+            <div class="notes">
+                <h4>📝 Notas Importantes:</h4>
+                <ul>
+                    <li>Día de bombeo y volumen adicional</li>
+                    <li>Enfoque en debilidades y accesorios</li>
+                    <li>Duración total: 60-75 minutos</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cargar progreso guardado al iniciar
+        window.onload = function () {
+            loadProgress();
+        };
+
+        function showDay(day) {
+            // Ocultar todos los días
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById('day' + i).classList.remove('active');
+                document.querySelectorAll('.tab')[i - 1].classList.remove('active');
+            }
+
+            // Mostrar el día seleccionado
+            document.getElementById('day' + day).classList.add('active');
+            document.querySelectorAll('.tab')[day - 1].classList.add('active');
+        }
+
+        function updateProgress(day) {
+            const dayElement = document.getElementById('day' + day);
+            const checkboxes = dayElement.querySelectorAll('input[type="checkbox"]');
+            const total = checkboxes.length;
+            let checked = 0;
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    checked++;
+                    checkbox.parentElement.classList.add('completed');
+                } else {
+                    checkbox.parentElement.classList.remove('completed');
+                }
+            });
+
+            const percentage = Math.round((checked / total) * 100);
+            const progressBar = document.getElementById('progress' + day);
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+
+            // Guardar progreso en localStorage
+            saveProgress(day);
+        }
+
+        function resetDay(day) {
+            if (confirm('¿Estás seguro de que quieres reiniciar el progreso de este día?')) {
+                const dayElement = document.getElementById('day' + day);
+                const checkboxes = dayElement.querySelectorAll('input[type="checkbox"]');
+
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                    checkbox.parentElement.classList.remove('completed');
+                });
+
+                updateProgress(day);
+            }
+        }
+
+        function saveProgress(day) {
+            const dayElement = document.getElementById('day' + day);
+            const checkboxes = dayElement.querySelectorAll('input[type="checkbox"]');
+            const state = [];
+
+            checkboxes.forEach(checkbox => {
+                state.push(checkbox.checked);
+            });
+
+            localStorage.setItem('day' + day + 'Progress', JSON.stringify(state));
+        }
+
+        function loadProgress() {
+            for (let day = 1; day <= 4; day++) {
+                const saved = localStorage.getItem('day' + day + 'Progress');
+                if (saved) {
+                    const state = JSON.parse(saved);
+                    const dayElement = document.getElementById('day' + day);
+                    const checkboxes = dayElement.querySelectorAll('input[type="checkbox"]');
+
+                    checkboxes.forEach((checkbox, index) => {
+                        if (state[index]) {
+                            checkbox.checked = true;
+                        }
+                    });
+
+                    updateProgress(day);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

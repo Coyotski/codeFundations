@@ -1,0 +1,559 @@
+JULIO ALBERTO MARTINEZ BADILLO
+8:57
+buenos días
+Teutle Amastal Guillermo
+8:57
+Buenos días
+JULIO ALBERTO MARTINEZ BADILLO
+8:57
+yo 8:30
+Rodríguez Meléndez Tania Yanely
+9:00
+Hola buenos días a todos :)
+Rodríguez Meléndez Tania Yanely
+9:03
+regreso
+Teutle Amastal Guillermo
+9:03
+Si profe ya se ve
+JULIO ALBERTO MARTINEZ BADILLO
+9:06
+yo no lo recuerdo profe
+no lo veo profe
+Teutle Amastal Guillermo
+9:07
+no se ve
+JULIO ALBERTO MARTINEZ BADILLO
+9:08
+ya
+Aguilar Vela Luis Héctor
+9:14
+Asigna
+Acceso-pass
+Rodríguez Meléndez Tania Yanely
+9:15
+autorizado entre acceso y usuario
+Teutle Amastal Guillermo
+9:15
+Verifica
+entre pass y reglas
+Rodríguez Meléndez Tania Yanely
+9:17
+usuario: rol del usuario o tipo de usuario
+Aguilar Vela Luis Héctor
+9:25
+Profe, en este momento se me complica
+Si
+Aguilar Vela Luis Héctor
+9:27
+Aaaa me refiero a participar en este momento por temas de chamba
+Juan Morales “JMM”
+9:27
+ah ok ntp Luis ntp
+Aguilar Vela Luis Héctor
+9:28
+Pero estoy atento
+Rodríguez Meléndez Tania Yanely
+9:30
+pofe podemos corregirlo
+dejamos tipo y agregamos nombre, telefono
+Aguilar Vela Luis Héctor
+9:32
+Para mí, longitud debe pertenecer a reglas
+Aguilar Vela Luis Héctor
+9:34
+Por ejemplo, cuando se solicita obligatoriamente un mínimo de caracteres para asignar una contraseña
+Miriam Palacios
+9:35
+Yo creo lo dice, porque después de reglas, dice caracteres especiales no?
+Aguilar Vela Luis Héctor
+9:36
+Es que entendí "reglas" como los terminos que se deben considerar para asignar la contraseña
+Aguilar Vela Luis Héctor
+9:37
+Entonces, por ejemplo, una regla sería que la contraseña tenga una longitud no menor a 8 caracteres
+JULIO ALBERTO MARTINEZ BADILLO
+9:37
+Si es validar la longitud yo digo que en reglas no?
+Aguilar Vela Luis Héctor
+9:38
+Dejaría longitud en reglas
+Tú
+9:39
+public class Usuario {
+// atributos
+    public String nombreUsuario;
+    public String telefonoUsuario;
+    public String rolUsuario;
+    
+    //comportamiento
+    public void mostrarInformacion(){
+        System.out.println("Nombre de usuario: " + nombreUsuario);
+        System.out.println("Tipo de usuario: " + telefonoUsuario);
+        System.out.println("Rol de usuario: " + rolUsuario);
+    }
+    
+    //constructor de la clase
+    public Usuario(String nombreUsuario, String telefonoUsuario, String rolUsuario) {
+       this.nombreUsuario = nombreUsuario;
+       this.telefonoUsuario = telefonoUsuario;          
+       this.rolUsuario = rolUsuario;
+    }
+
+    //main para probar la clase Usuario
+    public static void main(String[] args) {
+        // Crear una instancia de la clase Usuario
+        Usuario usuario1 = new Usuario("juanPerez", "1234567890", "gestor");
+
+        // Probar el método de la clase Usuario
+        usuario1.mostrarInformacion();
+    }
+}
+Miriam Palacios
+9:43
+Profe, duda, ahí por ejemplo veo que dice nombre de usuario, pero en el que sigue puede decir teléfono; sin decir,  teléfono de usuario?
+Miriam Palacios
+9:44
+Perfecto, gracias.
+Aguilar Vela Luis Héctor
+9:44
+Pero hay que considerar que si existe otro dato de telefono que no sea de usuario nos podemos confundir, no?
+JULIO ALBERTO MARTINEZ BADILLO
+9:45
+yo la clase de acceso?
+ok
+JULIO ALBERTO MARTINEZ BADILLO
+9:49
+Puede ser asi?
+public class Acceso {
+
+    private String usuario;
+    private String password;
+
+    public Acceso(String usuario, String password) {
+        this.usuario = usuario;
+        this.password = password;
+    }
+
+    public void validarAcceso() {
+        if (this.usuario == "admin" && this.password == "1234") {
+            System.out.println("Acceso concedido.");
+        } else {
+            System.out.println("Acceso denegado.");
+        }
+    }
+}
+Miriam Palacios
+9:53
+import java.time.LocalDateTime;
+public class Acceso {
+    public Usuario usuario;
+    public String contraseñaIngresada;
+    public LocalDateTime fechaHora;
+    // Constructor
+    public Acceso(Usuario usuario, String contraseñaIngresada) {
+        this.usuario = usuario;
+        this.contraseñaIngresada = contraseñaIngresada;
+        this.fechaHora = LocalDateTime.now();
+        this.accesoPermitido = validarAcceso();
+    }
+Perdón, se me fue, es lo que llevaba, pero me falta todavía
+JULIO ALBERTO MARTINEZ BADILLO
+9:53
+la fecha?
+Serrano Rodríguez Alejandro
+9:54
+Solo es password prívate no ?
+JULIO ALBERTO MARTINEZ BADILLO
+9:54
+Es para limitar el acceso a la propiedad
+pero si
+no tenia que ponerlo
+Miriam Palacios
+9:56
+ah, para la variable
+JULIO ALBERTO MARTINEZ BADILLO
+9:57
+jejeje
+Miriam Palacios
+9:57
+puse a usuario en público, porque seguí el patrón del compañero César
+pero no está completo profe. =(
+Cierto
+Serrano Rodríguez Alejandro
+9:58
+Hay alguna forma de cambiarle el nombre de la clase sin que marque error ?
+Miriam Palacios
+9:58
+me falta profe =(
+No lo acabé
+Guardar las fechas y horas exactas
+Miriam Palacios
+9:59
+en cuando el usuario hizo el intento de acceder
+JULIO ALBERTO MARTINEZ BADILLO
+10:01
+ese es para referenciar que es propiedad de la propia clase
+Miriam Palacios
+10:07
+Son ambos? atributos y clases?
+Rodríguez Meléndez Tania Yanely
+10:08
+public class Pass {
+
+    //atributos
+    Pass reglas;
+
+    
+    //metodo de comportamiento
+    public Pass(Pass r ) {
+        reglas = r;
+    }
+
+    public void mostrar_valores()
+    {
+        System.out.println("muestra los valores reglas:" 
+        + reglas );
+
+
+    }
+    
+}
+Rodríguez Meléndez Tania Yanely
+10:09
+fue de acuerdo a lo que dijo ahorita
+ok
+Rudy Ortiz
+10:12
+Ya no lleva los this
+Aguilar Vela Luis Héctor
+10:12
+Por qué no existe admin?
+Rudy Ortiz
+10:12
+Ya que pertenecen a otra clase!
+Aguilar Vela Luis Héctor
+10:13
+No está definido
+Rudy Ortiz
+10:13
+Pero viene de la Clase UsuarioMio!
+JULIO ALBERTO MARTINEZ BADILLO
+10:14
+creo que quiere decir que el objeto usuarioMio
+no existe
+Rodríguez Meléndez Tania Yanely
+10:14
+tipo clase
+JULIO ALBERTO MARTINEZ BADILLO
+10:14
+es un UsuarioMio
+un string
+cadena
+si
+ok
+JULIO ALBERTO MARTINEZ BADILLO
+10:16
+jejeje
+Rudy Ortiz
+10:17
+Ocuparíamos un Parse!
+JULIO ALBERTO MARTINEZ BADILLO
+10:18
+si
+JULIO ALBERTO MARTINEZ BADILLO
+10:20
+que se llama igual que la clase
+y no se indica el void o un tipo de retorno?
+JULIO ALBERTO MARTINEZ BADILLO
+10:21
+yo de momento no profe
+Miriam Palacios
+10:22
+El void es para retornar o más bien, para no devolver ningún valor?
+Miriam Palacios
+10:23
+no se ve
+variable
+JULIO ALBERTO MARTINEZ BADILLO
+10:23
+string
+Rodríguez Meléndez Tania Yanely
+10:23
+String
+JULIO ALBERTO MARTINEZ BADILLO
+10:23
+cadena
+por la comillas
+Miriam Palacios
+10:24
+cierto.
+return
+Miriam Palacios
+10:25
+cadena
+Aguilar Vela Luis Héctor
+10:25
+String
+Miriam Palacios
+10:25
+string
+Miriam Palacios
+10:26
+Gracia
+sí, gracias a todos
+Aguilar Vela Luis Héctor
+10:28
+String
+JULIO ALBERTO MARTINEZ BADILLO
+10:28
+bueno yo si profe. en Acesso para que la clase UsuarioMio se logre ver sus atributos se tiene que indicar de alfuna forma la referencia?
+Aguilar Vela Luis Héctor
+10:29
+n
+Rodríguez Meléndez Tania Yanely
+10:29
+tipo clase usuarioMio
+Aguilar Vela Luis Héctor
+10:30
+Usuariomio
+Aguilar Vela Luis Héctor
+10:34
+Hay que quitar el void no?
+JULIO ALBERTO MARTINEZ BADILLO
+10:35
+pero entonces con el solo crea la referencia?? osea con que existan las clases en mi proyecto se pueden ver entre ellas??
+JULIO ALBERTO MARTINEZ BADILLO
+10:36
+ok
+ok profe
+Rodríguez Meléndez Tania Yanely
+10:37
+ok
+JULIO ALBERTO MARTINEZ BADILLO
+10:37
+le agradezco
+Juan Morales “JMM”
+10:37
+public class Acceso {
+
+    //ATRIBUTOS
+    UsuarioMio usuariooo;
+    Pass password;
+    Fecha fecha;
+
+    public Acceso(UsuarioMio u, Pass p, Fecha f) {
+        usuariooo = u;
+        password = p;
+        fecha = f;
+    }
+
+    public void validarAcceso(UsuarioMio um) {
+        if (this.usuariooo == um ) {
+            System.out.println("Acceso concedido a nombre de usuario:" + usuariooo.nombreUsuariooo );
+
+        } else {
+            System.out.println("Acceso denegado.");
+        }
+    }
+}
+public class UsuarioMio {
+    // ATRIBUTOS
+    public String nombreUsuariooo;
+    public String telefonoUsuario;
+    public String rolUsuario;
+    
+    ///// COMPORTAMIENTO
+    //constructor de la clase
+    public UsuarioMio(String n, String t, String r) {
+       this.nombreUsuariooo = n;
+       this.telefonoUsuario = t;          
+       this.rolUsuario = r;
+    }
+
+    public String mostrarInformacion(){
+        System.out.println("Nombre de usuario: " + nombreUsuariooo);
+        System.out.println("Tipo de usuario: " + telefonoUsuario);
+        System.out.println("Rol de usuario: " + rolUsuario);
+        return "loquesea";
+    }
+    
+    
+
+    //main para probar la clase Usuario
+    public static void main(String[] args) {
+        // Crear una instancia de la clase Usuario
+        Usuario usuario1 = new Usuario("juanPerez", "1234567890", "gestor");
+
+        // Probar el método de la clase Usuario
+        usuario1.mostrarInformacion();
+    }
+}
+public class Pass {
+
+    //atributos
+    Regla reglas;
+
+    
+    //metodo de comportamiento
+    public Pass(Regla r ) {
+        reglas = r;
+    }
+
+    public void mostrar_valores()
+    {
+        System.out.println("muestra los valores reglas:" 
+        + reglas );
+    }
+    
+}
+Aguilar Vela Luis Héctor
+10:39
+No
+Miriam Palacios
+10:39
+NO, EL 20, CREO
+Aguilar Vela Luis Héctor
+10:39
+Así es
+JULIO ALBERTO MARTINEZ BADILLO
+10:40
+pero dice algo de que se tiene que subir en el de la semana 3?? no entendi bien eso
+Miriam Palacios
+10:40
+si le da clic en la segunda semana
+en 4A es donde aparece 20 de noviembre, también
+Aguilar Vela Luis Héctor
+10:41
+Puede copiar el código nuevamente por favor??
+Miriam Palacios
+10:41
+yo decía abajo, donde estaba abriendo las semanas
+Aguilar Vela Luis Héctor
+10:41
+Acceso
+Miriam Palacios
+10:41
+semana 2
+no, semana 2 profe
+ahí
+Rodríguez Meléndez Tania Yanely
+10:43
+en el foro
+noo yo no la puse
+Aguilar Vela Luis Héctor
+10:45
+Profe, puede pegar el código que nos compartió en el chat otra vez  por favor
+Rodríguez Meléndez Tania Yanely
+10:46
+public class Acceso {
+
+    //ATRIBUTOS
+    UsuarioMio usuariooo;
+    Pass password;
+    Fecha fecha;
+
+    public Acceso(UsuarioMio u, Pass p, Fecha f) {
+        usuariooo = u;
+        password = p;
+        fecha = f;
+    }
+
+    public void validarAcceso(UsuarioMio um) {
+        if (this.usuariooo == um ) {
+            System.out.println("Acceso concedido a nombre de usuario:" + usuariooo.nombreUsuariooo );
+
+        } else {
+            System.out.println("Acceso denegado.");
+        }
+    }
+}
+Aguilar Vela Luis Héctor
+10:46
+Es que no loo puedo ver
+Por que cambie de equipo
+Y no lo puedo ver
+Ya
+Rodríguez Meléndez Tania Yanely
+10:46
+public class UsuarioMio {
+    // ATRIBUTOS
+    public String nombreUsuariooo;
+    public String telefonoUsuario;
+    public String rolUsuario;
+    
+    ///// COMPORTAMIENTO
+    //constructor de la clase
+    public UsuarioMio(String n, String t, String r) {
+       this.nombreUsuariooo = n;
+       this.telefonoUsuario = t;          
+       this.rolUsuario = r;
+    }
+
+    public String mostrarInformacion(){
+        System.out.println("Nombre de usuario: " + nombreUsuariooo);
+        System.out.println("Tipo de usuario: " + telefonoUsuario);
+        System.out.println("Rol de usuario: " + rolUsuario);
+        return "loquesea";
+    }
+    
+    
+
+    //main para probar la clase Usuario
+    public static void main(String[] args) {
+        // Crear una instancia de la clase Usuario
+        Usuario usuario1 = new Usuario("juanPerez", "1234567890", "gestor");
+
+        // Probar el método de la clase Usuario
+        usuario1.mostrarInformacion();
+    }
+}
+JULIO ALBERTO MARTINEZ BADILLO
+10:46
+el de la clase Fecha y Reglas lo tienen?
+Rodríguez Meléndez Tania Yanely
+10:47
+public class Pass {
+
+    //atributos
+    Regla reglas;
+
+    
+    //metodo de comportamiento
+    public Pass(Regla r ) {
+        reglas = r;
+    }
+
+    public void mostrar_valores()
+    {
+        System.out.println("muestra los valores reglas:" 
+        + reglas );
+
+
+    }
+    
+}
+public class Fecha {
+    int dia;
+    int mes;
+    int año;
+
+    public Fecha(int d, int m, int a) {
+        dia = d;
+        mes = m;
+        año = a;
+    }
+
+    public void mostrar_valores()
+    {
+        System.out.println("imprime valor dia:" 
+        + dia + "mes:" + mes "año:" + año);
+
+
+    }
+}
+Reglas es el del foro
+que hay que revisar y modificar
+Aguilar Vela Luis Héctor
+10:48
+Gracias

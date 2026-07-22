@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos Enviados</title>
+    <link rel="stylesheet" href="card.css">
+</head>
+<body>
+    <main>
+        <table>
+            <tr>
+                <th>Datos del Alumno</th>
+            </tr>
+        </table>
+    </main>
+
+    <div class="message-container">
+        <h1>Datos enviados</h1>
+        <p>Tu información ha sido registrada correctamente.</p>
+    </div>
+
+    <script>
+        const datosGuardados = localStorage.getItem('datos');
+        if (datosGuardados) {
+            const datos = JSON.parse(datosGuardados);
+            const tabla = document.querySelector('table');
+
+            for (const key in datos) {
+                const row = tabla.insertRow();
+                const cell1 = row.insertCell();
+                const cell2 = row.insertCell();
+
+                cell1.textContent = key;
+                cell2.textContent = datos[key];
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+services:
+  postgres:
+    build: .
+    container_name: ContDBpractMod3
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: Admin
+      POSTGRES_PASSWORD: p4sswOrdDB
+      POSTGRES_DB: gestion_usuarios
+    volumes:
+      - postgres_data_mod3:/var/lib/postgresql/data
+
+volumes:
+  postgres_data_mod3:
+    driver: local

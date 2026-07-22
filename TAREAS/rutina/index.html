@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutina Powerlifter Masivo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        /* Estilo para hacer los checkboxes más grandes y fáciles de tocar */
+        .form-check-input.large-checkbox {
+            width: 2.5em;
+            height: 2.5em;
+            margin-top: 0;
+        }
+        .form-check.large-form-check {
+            display: flex;
+            align-items: center;
+            min-height: 3em;
+        }
+        .form-check-label.large-label {
+            font-size: 1.2em;
+            margin-left: 0.5em;
+        }
+        .weight-input {
+            width: 80px !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid py-3">
+        <header class="text-center mb-4">
+            <h1>🔥 Powerlifter Masivo 🔥</h1>
+            <p class="lead">De 117kg a 140kg: La Fuerza es la Base</p>
+        </header>
+
+        <div class="accordion" id="mainAccordion">
+
+            <!-- DÍA 1: LUNES -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLunes" aria-expanded="true" aria-controls="collapseLunes">
+                        🏋️ DÍA 1 - LUNES: Sentadilla
+                    </button>
+                </h2>
+                <div id="collapseLunes" class="accordion-collapse collapse show" data-bs-parent="#mainAccordion">
+                    <div class="accordion-body">
+                        <!-- Ejercicios Lunes -->
+                        <div id="lunes-ejercicios" class="d-grid gap-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DÍA 2: MIÉRCOLES -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button fs-4 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMiercoles" aria-expanded="false" aria-controls="collapseMiercoles">
+                        🏋️ DÍA 2 - MIÉRCOLES: Peso Muerto
+                    </button>
+                </h2>
+                <div id="collapseMiercoles" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
+                    <div class="accordion-body">
+                        <div id="miercoles-ejercicios" class="d-grid gap-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DÍA 3: VIERNES -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button fs-4 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseViernes" aria-expanded="false" aria-controls="collapseViernes">
+                        🏋️ DÍA 3 - VIERNES: Banca y Militar
+                    </button>
+                </h2>
+                <div id="collapseViernes" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
+                    <div class="accordion-body">
+                        <div id="viernes-ejercicios" class="d-grid gap-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLAN DE NUTRICIÓN -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button fs-4 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNutricion" aria-expanded="false" aria-controls="collapseNutricion">
+                        🍖 Plan de Nutrición
+                    </button>
+                </h2>
+                <div id="collapseNutricion" class="accordion-collapse collapse" data-bs-parent="#mainAccordion">
+                    <div class="accordion-body">
+                        <div id="nutricion-plan" class="d-grid gap-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <button id="resetButton" class="btn btn-danger">
+                <i class="bi bi-arrow-counterclockwise"></i> Resetear Progreso Semanal
+            </button>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dias = {
+                lunes: {
+                    id: 'lunes-ejercicios',
+                    ejercicios: [
+                        { nombre: 'Sentadilla Baja', series: 4, reps: 5, sugerido: '80-100kg' },
+                        { nombre: 'Prensa de Pierna', series: 3, reps: '8-10', sugerido: '150-250kg' },
+                        { nombre: 'Peso Muerto Rumano', series: 3, reps: 10, sugerido: '60-80kg' },
+                        { nombre: 'Extensiones de Cuádriceps', series: 3, reps: 15, sugerido: '40-70kg' },
+                        { nombre: 'Curl Femoral', series: 3, reps: 12, sugerido: '30-50kg' },
+                        { nombre: 'Pantorrillas', series: 4, reps: '15-20', sugerido: '60-100kg' }
+                    ]
+                },
+                miercoles: {
+                    id: 'miercoles-ejercicios',
+                    ejercicios: [
+                        { nombre: 'Peso Muerto Convencional', series: 3, reps: 5, sugerido: '100-130kg' },
+                        { nombre: 'Remo con Barra', series: 4, reps: '8-10', sugerido: '60-80kg' },
+                        { nombre: 'Remo con Mancuerna a 1 Brazo', series: 3, reps: 10, sugerido: '25-40kg' },
+                        { nombre: 'Jalón al Pecho', series: 3, reps: '10-12', sugerido: '60-90kg' },
+                        { nombre: 'Remo en Polea Baja', series: 3, reps: 12, sugerido: '60-80kg' },
+                        { nombre: 'Face Pulls', series: 3, reps: '15-20', sugerido: '15-25kg' },
+                        { nombre: 'Encogimientos de Hombros', series: 3, reps: '12-15', sugerido: '30-50kg' }
+                    ]
+                },
+                viernes: {
+                    id: 'viernes-ejercicios',
+                    ejercicios: [
+                        { nombre: 'Press de Banca Plano', series: 4, reps: 5, sugerido: '70-90kg' },
+                        { nombre: 'Press Inclinado', series: 3, reps: '6-8', sugerido: '60-80kg' },
+                        { nombre: 'Aperturas', series: 3, reps: 12, sugerido: '15-25kg' },
+                        { nombre: 'Press Militar de Pie', series: 3, reps: '5-6', sugerido: '45-60kg' },
+                        { nombre: 'Press con Mancuernas Sentado', series: 2, reps: 8, sugerido: '20-35kg' },
+                        { nombre: 'Curl de Bíceps con Barra', series: 3, reps: '8-10', sugerido: '30-50kg' },
+                        { nombre: 'Extensiones de Tríceps en Polea', series: 3, reps: '12-15', sugerido: '25-40kg' },
+                        { nombre: 'Curl Martillo', series: 2, reps: 12, sugerido: '15-25kg' },
+                        { nombre: 'Press Cerrado', series: 2, reps: '8-10', sugerido: '50-70kg' }
+                    ]
+                }
+            };
+
+            const planNutricion = [
+                { comida: 'Desayuno', detalles: '6 huevos, 150g avena, 2 plátanos, 30g mantequilla maní' },
+                { comida: 'Media Mañana', detalles: 'Sándwich (250g pavo/pollo), 1 aguacate, 50g queso' },
+                { comida: 'Pre-Entreno', detalles: '250g pasta, 250g carne molida/pollo, aceite de oliva' },
+                { comida: 'Post-Entreno (Batido)', detalles: '500ml leche, 3 plátanos, 40g mantequilla maní, 50g miel, 100g avena' },
+                { comida: 'Cena', detalles: '300g salmón/carne, 300g papa/arroz, ensalada' },
+                { comida: 'Antes de Dormir', detalles: '300g requesón/yogurt, 50g nueces, miel, 1 plátano' }
+            ];
+
+            const storageKey = 'powerlifterProgress';
+
+            function loadState() {
+                return JSON.parse(localStorage.getItem(storageKey)) || {};
+            }
+
+            function saveState(state) {
+                localStorage.setItem(storageKey, JSON.stringify(state));
+            }
+
+            function generateExerciseHTML(diaKey, ejercicio, index) {
+                let seriesHTML = '';
+                for (let i = 1; i <= ejercicio.series; i++) {
+                    const checkboxId = `${diaKey}-ej${index}-serie${i}-check`;
+                    const inputId = `${diaKey}-ej${index}-serie${i}-peso`;
+                    
+                    seriesHTML += `
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="form-check large-form-check">
+                                <input class="form-check-input large-checkbox" type="checkbox" id="${checkboxId}" data-key="${checkboxId}">
+                                <label class="form-check-label large-label" for="${checkboxId}">
+                                    Serie ${i}
+                                </label>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="me-3 text-muted d-none d-sm-inline">Sug: ${ejercicio.sugerido}</span>
+                                <input type="number" class="form-control weight-input" id="${inputId}" data-key="${inputId}" placeholder="kg">
+                            </div>
+                        </li>
+                    `;
+                }
+
+                return `
+                    <div class="card">
+                        <div class="card-header fs-5">
+                            ${ejercicio.nombre} <span class="badge bg-secondary float-end">${ejercicio.series} x ${ejercicio.reps}</span>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            ${seriesHTML}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            function generateNutricionHTML() {
+                const container = document.getElementById('nutricion-plan');
+                let html = '';
+                planNutricion.forEach(item => {
+                    html += `
+                        <div class="card">
+                            <div class="card-header fs-5">${item.comida}</div>
+                            <div class="card-body">
+                                <p class="card-text">${item.detalles}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+
+            function render() {
+                const state = loadState();
+
+                for (const [diaKey, diaData] of Object.entries(dias)) {
+                    const container = document.getElementById(diaData.id);
+                    container.innerHTML = diaData.ejercicios.map((ej, index) => generateExerciseHTML(diaKey, ej, index)).join('');
+                }
+
+                generateNutricionHTML();
+
+                // Restore state from localStorage
+                document.querySelectorAll('input[type="checkbox"], input[type="number"]').forEach(el => {
+                    const key = el.dataset.key;
+                    if (state[key]) {
+                        if (el.type === 'checkbox') {
+                            el.checked = state[key];
+                        } else {
+                            el.value = state[key];
+                        }
+                    }
+                });
+            }
+
+            function setupEventListeners() {
+                document.querySelector('#mainAccordion').addEventListener('input', function(e) {
+                    if (e.target.matches('input[type="checkbox"], input[type="number"]')) {
+                        const state = loadState();
+                        const key = e.target.dataset.key;
+                        if (e.target.type === 'checkbox') {
+                            state[key] = e.target.checked;
+                        } else {
+                            state[key] = e.target.value;
+                        }
+                        saveState(state);
+                    }
+                });
+
+                document.getElementById('resetButton').addEventListener('click', function() {
+                    if (confirm('¿Estás seguro de que quieres borrar todo el progreso de la semana? Esta acción no se puede deshacer.')) {
+                        localStorage.removeItem(storageKey);
+                        render();
+                    }
+                });
+            }
+
+            render();
+            setupEventListeners();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutina Leviatán - Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 15px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .mode-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .mode-btn.active {
+            background: #ffd700;
+            color: #1e3c72;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tab.active {
+            background: #ffd700;
+            color: #1e3c72;
+        }
+
+        .day-content {
+            display: none;
+        }
+
+        .day-content.active {
+            display: block;
+        }
+
+        .exercise-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .exercise-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .exercise-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            flex-shrink: 0;
+        }
+
+        .exercise-info h3 {
+            color: #1e3c72;
+            margin-bottom: 4px;
+            font-size: 1.1em;
+        }
+
+        .exercise-details {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .series-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .series-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto auto;
+            gap: 10px;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .series-row.completed {
+            opacity: 0.6;
+        }
+
+        .series-checkbox {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .series-label {
+            font-weight: 600;
+            color: #495057;
+            min-width: 60px;
+        }
+
+        .suggested {
+            background: #e7f3ff;
+            color: #0066cc;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            white-space: nowrap;
+        }
+
+        .weight-input,
+        .reps-input {
+            width: 70px;
+            padding: 6px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        .weight-input:focus,
+        .reps-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 28px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .reset-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            width: 100%;
+            font-size: 0.95em;
+        }
+
+        .reset-btn:hover {
+            background: #c82333;
+        }
+
+        .notes {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+
+        .notes h4 {
+            color: #856404;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .notes ul {
+            margin-left: 18px;
+            color: #856404;
+            font-size: 0.85em;
+        }
+
+        @media (max-width: 768px) {
+            .series-row {
+                grid-template-columns: auto 1fr;
+                gap: 8px;
+            }
+
+            .suggested,
+            .weight-input,
+            .reps-input {
+                grid-column: 2;
+            }
+
+            .weight-input,
+            .reps-input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🏋️ RUTINA LEVIATÁN</h1>
+        <p class="subtitle">118kg → 140kg | Powerlifting 4 Días</p>
+
+        <div class="mode-selector">
+            <button class="mode-btn active" onclick="switchMode('standard')">📅 RUTINA ESTÁNDAR</button>
+            <button class="mode-btn" onclick="switchMode('night')">🌙 RUTINA NOCTURNA</button>
+        </div>
+
+        <div id="standard-mode">
+            <div class="tabs">
+                <div class="tab active" onclick="showDay('standard', 1)">DÍA 1: PIERNA</div>
+                <div class="tab" onclick="showDay('standard', 2)">DÍA 2: EMPUJE</div>
+                <div class="tab" onclick="showDay('standard', 3)">DÍA 3: TIRÓN</div>
+                <div class="tab" onclick="showDay('standard', 4)">DÍA 4: ACCESORIOS</div>
+            </div>
+            <div id="standard-day-content"></div>
+        </div>
+
+        <div id="night-mode" style="display: none;">
+            <div class="tabs">
+                <div class="tab active" onclick="showDay('night', 1)">DÍA 1: PIERNA</div>
+                <div class="tab" onclick="showDay('night', 2)">DÍA 2: EMPUJE</div>
+                <div class="tab" onclick="showDay('night', 3)">DÍA 3: TIRÓN</div>
+                <div class="tab" onclick="showDay('night', 4)">DÍA 4: ACCESORIOS</div>
+            </div>
+            <div id="night-day-content"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script>
+        const routineData = {
+            standard: {
+                1: {
+                    name: "SENTADILLA + PIERNA",
+                    exercises: [
+                        { name: "SENTADILLA CON BARRA", sets: 4, reps: "3-5", rest: "4-5 min", weight: "120kg", notes: "85-90% 1RM" },
+                        { name: "PRENSA DE PIERNA", sets: 3, reps: "8-10", rest: "2-3 min", weight: "200kg" },
+                        { name: "PESO MUERTO RUMANO", sets: 3, reps: "6-8", rest: "2-3 min", weight: "100kg" },
+                        { name: "EXTENSIONES DE CUÁDRICEPS", sets: 3, reps: "12-15", rest: "90 seg", weight: "60kg" },
+                        { name: "CURL FEMORAL TUMBADO", sets: 4, reps: "10-12", rest: "90 seg", weight: "50kg" },
+                        { name: "PANTORRILLAS", sets: 4, reps: "15-20", rest: "60 seg", weight: "80kg" }
+                    ],
+                    notes: ["Profundidad en sentadilla: Muslos paralelos al piso mínimo", "Descansos largos en ejercicios principales (4-5 min)", "Duración total: 75-90 minutos"]
+                },
+                2: {
+                    name: "PRESS DE BANCA + EMPUJE",
+                    exercises: [
+                        { name: "PRESS DE BANCA PLANO", sets: 4, reps: "3-5", rest: "4-5 min", weight: "100kg", notes: "85-90% 1RM" },
+                        { name: "PRESS INCLINADO CON MANCUERNAS", sets: 3, reps: "8-10", rest: "2-3 min", weight: "35kg" },
+                        { name: "PRESS MILITAR CON BARRA", sets: 3, reps: "6-8", rest: "3 min", weight: "60kg" },
+                        { name: "FONDOS EN PARALELAS", sets: 3, reps: "AMRAP", rest: "2 min", weight: "Peso corporal" },
+                        { name: "EXTENSIONES DE TRÍCEPS", sets: 3, reps: "12-15", rest: "90 seg", weight: "40kg" },
+                        { name: "ELEVACIONES LATERALES", sets: 3, reps: "15-20", rest: "60 seg", weight: "12kg" }
+                    ],
+                    notes: ["Barra toca el pecho en press de banca", "Espalda arqueada, omóplatos retraídos", "Duración total: 75-90 minutos"]
+                },
+                3: {
+                    name: "PESO MUERTO + ESPALDA",
+                    exercises: [
+                        { name: "PESO MUERTO CONVENCIONAL", sets: 3, reps: "3-5", rest: "5 min", weight: "140kg", notes: "85-90% 1RM" },
+                        { name: "REMO CON BARRA", sets: 4, reps: "6-8", rest: "2-3 min", weight: "80kg" },
+                        { name: "JALÓN AL PECHO", sets: 3, reps: "10-12", rest: "2 min", weight: "70kg" },
+                        { name: "REMO EN MÁQUINA", sets: 3, reps: "10-12", rest: "90 seg", weight: "60kg" },
+                        { name: "FACE PULLS", sets: 4, reps: "15-20", rest: "60 seg", weight: "30kg" },
+                        { name: "CURL DE BÍCEPS", sets: 3, reps: "8-10", rest: "90 seg", weight: "40kg" },
+                        { name: "ENCOGIMIENTOS (SHRUGS)", sets: 3, reps: "12-15", rest: "90 seg", weight: "100kg" }
+                    ],
+                    notes: ["Espalda neutral en peso muerto, NO redondeada", "Descanso de 5 minutos completos en peso muerto", "Duración total: 80-95 minutos"]
+                },
+                4: {
+                    name: "HIPERTROFIA / ACCESORIOS",
+                    exercises: [
+                        { name: "PRESS DE HOMBROS CON MANCUERNAS", sets: 3, reps: "10-12", rest: "2 min", weight: "30kg" },
+                        { name: "ELEVACIONES LATERALES", sets: 4, reps: "15-20", rest: "60 seg", weight: "12kg" },
+                        { name: "PRESS INCLINADO EN MÁQUINA", sets: 3, reps: "12-15", rest: "90 seg", weight: "80kg" },
+                        { name: "CURL MARTILLO", sets: 3, reps: "10-12", rest: "90 seg", weight: "18kg" },
+                        { name: "EXTENSIONES DE TRÍCEPS SOBRE CABEZA", sets: 3, reps: "12-15", rest: "90 seg", weight: "25kg" },
+                        { name: "ABDOMINALES CON PESO", sets: 4, reps: "10-15", rest: "60 seg", weight: "20kg" },
+                        { name: "PLANCHA ABDOMINAL", sets: 3, reps: "45-60s", rest: "60 seg", weight: "-" }
+                    ],
+                    notes: ["Enfoque en bombeo, no fuerza máxima", "Día más ligero para recuperación", "Duración total: 60-75 minutos"]
+                }
+            },
+            night: {
+                1: {
+                    name: "PIERNA (HIPERTROFIA)",
+                    exercises: [
+                        { name: "SENTADILLA CON BARRA", sets: 4, reps: "6-8", rest: "3 min", weight: "100kg", notes: "75-80% 1RM, RPE 8" },
+                        { name: "PRENSA DE PIERNA", sets: 3, reps: "10-12", rest: "2 min", weight: "180kg" },
+                        { name: "ZANCADAS CON MANCUERNAS", sets: 3, reps: "10/pierna", rest: "90 seg", weight: "20kg" },
+                        { name: "CURL FEMORAL SENTADO", sets: 3, reps: "12-15", rest: "90 seg", weight: "45kg" },
+                        { name: "EXTENSIONES DE CUÁDRICEPS", sets: 3, reps: "15-20", rest: "60 seg", weight: "55kg" },
+                        { name: "PANTORRILLAS", sets: 3, reps: "20", rest: "60 seg", weight: "70kg" }
+                    ],
+                    notes: ["Tempo controlado: 3-1-2", "Post-entreno: 10 min caminata + 15 min estiramientos", "Suplementos: Magnesio 400mg, Ashwagandha 600mg"]
+                },
+                2: {
+                    name: "EMPUJE (PECHO/HOMBROS/TRÍCEPS)",
+                    exercises: [
+                        { name: "PRESS DE BANCA PLANO", sets: 4, reps: "6-8", rest: "3 min", weight: "85kg", notes: "75-80% 1RM, RPE 8" },
+                        { name: "PRESS INCLINADO CON MANCUERNAS", sets: 3, reps: "10-12", rest: "2 min", weight: "30kg" },
+                        { name: "PRESS DE HOMBROS CON MANCUERNAS", sets: 3, reps: "8-10", rest: "2 min", weight: "25kg" },
+                        { name: "APERTURAS CON MANCUERNAS", sets: 3, reps: "12-15", rest: "90 seg", weight: "18kg" },
+                        { name: "ELEVACIONES LATERALES", sets: 3, reps: "15-20", rest: "60 seg", weight: "10kg" },
+                        { name: "EXTENSIONES DE TRÍCEPS", sets: 3, reps: "12-15", rest: "90 seg", weight: "35kg" },
+                        { name: "FONDOS EN MÁQUINA", sets: 2, reps: "12-15", rest: "90 seg", weight: "60kg" }
+                    ],
+                    notes: ["Evita press militar de pie (mucha activación SNC)", "Protocolo post-entreno de 30 min", "CERO cafeína pre-entreno"]
+                },
+                3: {
+                    name: "TIRÓN (ESPALDA/BÍCEPS)",
+                    exercises: [
+                        { name: "REMO CON BARRA", sets: 4, reps: "6-8", rest: "3 min", weight: "75kg", notes: "Reemplaza peso muerto" },
+                        { name: "JALÓN AL PECHO", sets: 3, reps: "10-12", rest: "2 min", weight: "65kg" },
+                        { name: "REMO EN MÁQUINA", sets: 3, reps: "10-12", rest: "2 min", weight: "55kg" },
+                        { name: "PULLOVER CON MANCUERNA", sets: 3, reps: "12-15", rest: "90 seg", weight: "22kg" },
+                        { name: "FACE PULLS", sets: 3, reps: "15-20", rest: "60 seg", weight: "25kg" },
+                        { name: "CURL DE BÍCEPS ALTERNADO", sets: 3, reps: "10-12/brazo", rest: "90 seg", weight: "16kg" },
+                        { name: "CURL MARTILLO", sets: 2, reps: "12-15", rest: "90 seg", weight: "14kg" }
+                    ],
+                    notes: ["Peso muerto nocturno es DEMASIADO estimulante", "Remo pesado da estímulo similar con menos fatiga", "Duración: 90 min + 30 min protocolo"]
+                },
+                4: {
+                    name: "ACCESORIOS/BOMBEO",
+                    exercises: [
+                        { name: "PRESS DE HOMBROS EN MÁQUINA", sets: 3, reps: "12-15", rest: "90 seg", weight: "50kg" },
+                        { name: "ELEVACIONES LATERALES + FRONTALES", sets: 3, reps: "15+15", rest: "90 seg", weight: "10kg", notes: "Superserie" },
+                        { name: "PRESS INCLINADO EN MÁQUINA", sets: 3, reps: "12-15", rest: "90 seg", weight: "70kg" },
+                        { name: "CURL + EXTENSIÓN TRÍCEPS", sets: 3, reps: "12-15", rest: "90 seg", weight: "30kg", notes: "Superserie" },
+                        { name: "ABDOMINALES CON PESO", sets: 3, reps: "15-20", rest: "60 seg", weight: "15kg" },
+                        { name: "PLANCHA ABDOMINAL", sets: 3, reps: "45-60s", rest: "60 seg", weight: "-" }
+                    ],
+                    notes: ["Día MÁS FÁCIL de hacer de noche (baja intensidad SNC)", "Protocolo post-entreno reducido a 20 min", "Duración: 75 min + 20 min protocolo"]
+                }
+            }
+        };
+
+        let currentMode = 'standard';
+        let currentDay = { standard: 1, night: 1 };
+
+        function switchMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('standard-mode').style.display = mode === 'standard' ? 'block' : 'none';
+            document.getElementById('night-mode').style.display = mode === 'night' ? 'block' : 'none';
+            renderDay(mode, currentDay[mode]);
+        }
+
+        function showDay(mode, day) {
+            currentDay[mode] = day;
+            const tabs = document.querySelector(`#${mode}-mode .tabs`).children;
+            Array.from(tabs).forEach((tab, i) => {
+                tab.classList.toggle('active', i + 1 === day);
+            });
+            renderDay(mode, day);
+        }
+
+        function renderDay(mode, dayNum) {
+            const day = routineData[mode][dayNum];
+            const container = document.getElementById(`${mode}-day-content`);
+
+            let html = `<div class="day-content active">`;
+
+            day.exercises.forEach((ex, i) => {
+                html += `
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <div class="exercise-number">${i + 1}</div>
+                            <div class="exercise-info">
+                                <h3>${ex.name}</h3>
+                                <div class="exercise-details">${ex.sets} series x ${ex.reps} reps | Descanso: ${ex.rest}${ex.notes ? ' | ' + ex.notes : ''}</div>
+                            </div>
+                        </div>
+                        <div class="series-container">`;
+
+                for (let s = 1; s <= ex.sets; s++) {
+                    const id = `${mode}-d${dayNum}-e${i + 1}-s${s}`;
+                    html += `
+                        <div class="series-row">
+                            <input type="checkbox" class="series-checkbox" id="${id}" onchange="updateProgress('${mode}', ${dayNum})">
+                            <span class="series-label">Serie ${s}</span>
+                            <span class="suggested">💡 ${ex.weight}</span>
+                            <input type="number" class="weight-input" placeholder="kg" data-save="${id}-w">
+                            <input type="number" class="reps-input" placeholder="reps" data-save="${id}-r">
+                        </div>`;
+                }
+
+                html += `</div></div>`;
+            });
+
+            html += `
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-${mode}-${dayNum}" style="width: 0%">0%</div>
+                </div>
+                <button class="reset-btn" onclick="resetDay('${mode}', ${dayNum})">🔄 Reiniciar Día ${dayNum}</button>
+                <div class="notes">
+                    <h4>📝 Notas:</h4>
+                    <ul>${day.notes.map(n => `<li>${n}</li>`).join('')}</ul>
+                </div>
+            </div>`;
+
+            container.innerHTML = html;
+            loadData(mode, dayNum);
+        }
+
+        function updateProgress(mode, day) {
+            const container = document.getElementById(`${mode}-day-content`);
+            const checkboxes = container.querySelectorAll('.series-checkbox');
+            const total = checkboxes.length;
+            let checked = 0;
+
+            checkboxes.forEach(cb => {
+                const row = cb.closest('.series-row');
+                if (cb.checked) {
+                    checked++;
+                    row.classList.add('completed');
+                } else {
+                    row.classList.remove('completed');
+                }
+            });
+
+            const percentage = Math.round((checked / total) * 100);
+            const progressBar = document.getElementById(`progress-${mode}-${day}`);
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+
+            saveData();
+        }
+
+        function resetDay(mode, day) {
+            if (confirm('¿Reiniciar el progreso de este día?')) {
+                const container = document.getElementById(`${mode}-day-content`);
+                container.querySelectorAll('.series-checkbox').forEach(cb => cb.checked = false);
+                container.querySelectorAll('.weight-input, .reps-input').forEach(input => input.value = '');
+                container.querySelectorAll('.series-row').forEach(row => row.classList.remove('completed'));
+                updateProgress(mode, day);
+            }
+        }
+
+        function saveData() {
+            const data = {};
+            document.querySelectorAll('.series-checkbox').forEach(cb => {
+                data[cb.id] = cb.checked;
+            });
+            document.querySelectorAll('[data-save]').forEach(input => {
+                data[input.getAttribute('data-save')] = input.value;
+            });
+            localStorage.setItem('rutinaData', JSON.stringify(data));
+        }
+
+        function loadData(mode, day) {
+            const saved = localStorage.getItem('rutinaData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                Object.keys(data).forEach(key => {
+                    const element = document.getElementById(key) || document.querySelector(`[data-save="${key}"]`);
+                    if (element) {
+                        if (element.type === 'checkbox') {
+                            element.checked = data[key];
+                        } else {
+                            element.value = data[key];
+                        }
+                    }
+                });
+                updateProgress(mode, day);
+            }
+        }
+
+        document.addEventListener('input', function (e) {
+            if (e.target.matches('.weight-input, .reps-input')) {
+                saveData();
+            }
+        });
+
+        // Inicializar
+        renderDay('standard', 1);
+    </script>
+</body>
+
+</html>

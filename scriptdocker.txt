@@ -1,0 +1,3 @@
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\Users\César>  docker run --name dock-postgres -e POSTGRES_PASSWORD=pass -p 5432:5432 -d postgres

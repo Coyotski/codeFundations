@@ -1,0 +1,42 @@
+/* card.css */
+body {
+    font-family: sans-serif;
+    background-color: #dbe3ff;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+main {
+    /*display: flex;
+    flex-direction: column;*/
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    background-color: #e7fcff;
+}
+
+th, td {
+    padding: 8px;
+    border:none;
+    text-align: left;
+}
+
+.message-container{
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 20px auto;
+    max-width: 300px;
+    
+}
